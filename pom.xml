@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>de.jmens.demo</groupId>
+  <artifactId>maven-deployment</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+ 
+  <properties>
+    <maven.compiler.source>14</maven.compiler.source>
+    <maven.compiler.target>14</maven.compiler.target>
+  </properties>
+ 
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.5.2</version>
+        <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Disable default maven deploy plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <!-- Enable more sophisticated sonatype nexus deploy plugin -->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <serverId>jmens-nexus</serverId>
+          <nexusUrl>https://maven.jmens.de</nexusUrl>
+          <skipStaging>true</skipStaging>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>jmens-snapshots</id>
+      <url>https://maven.jmens.de/repository/maven-snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>jmens-releases</id>
+      <url>https://maven.jmens.de/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
+</project>
